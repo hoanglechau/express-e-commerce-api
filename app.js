@@ -8,12 +8,17 @@ require("express-async-errors");
 const express = require("express");
 const app = express();
 
+// rest of the packages
+const morgan = require("morgan");
+
 // database
 const connectDB = require("./db/connect");
 
 // middlewares
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
+
+app.use(morgan("tiny"));
 
 // middleware to allow access to json data
 app.use(express.json());
@@ -23,8 +28,10 @@ app.get("/", (req, res) => {
   res.send("e-commerce api");
 });
 
+// 404 Not Found is put after all the routes
 app.use(notFoundMiddleware);
-// error handler needs to be the last one
+// Express rule: error handler needs to be the last one
+// error handler is only invoked when there's an error in the normal routes, not in the non-existing routes
 app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || 5000;
