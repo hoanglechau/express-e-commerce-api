@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    unique: true,
     required: [true, "Please provide email"],
     validate: {
       // use the validator package to check with a regex pattern to see if the email format is correct
