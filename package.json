@@ -28,7 +28,9 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.9"
+    "eslint": "^8.38.0",
+    "nodemon": "^2.0.9",
+    "prettier": "^2.8.7"
   },
   "engines": {
     "node": "14.x"
