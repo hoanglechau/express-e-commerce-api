@@ -1,5 +1,6 @@
 const CustomError = require("../errors");
 
+// Use this to prevent users from accessing other users' information
 const checkPermissions = (requestUser, resourceUserId) => {
   // console.log(requestUser);
   // console.log(resourceUserId);
