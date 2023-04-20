@@ -2,6 +2,7 @@ const User = require("../models/User");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
 
+// This controller is only for admins
 const getAllUsers = async (req, res) => {
   const users = await User.find({ role: "user" }).select("-password");
   res.status(StatusCodes.OK).json({ users });
