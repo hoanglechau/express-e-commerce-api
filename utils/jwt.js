@@ -16,7 +16,9 @@ const attachCookiesToResponse = ({ res, user }) => {
   // Save the token in the browser cookies (instead of Local Storage)
   res.cookie("token", token, {
     httpOnly: true,
-    expires: new Date(Date.now() + oneDay)
+    expires: new Date(Date.now() + oneDay),
+    secure: process.env.NODE_ENV === "production",
+    signed: true
   });
 };
 
