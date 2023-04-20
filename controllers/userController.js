@@ -26,7 +26,26 @@ const updateUser = async (req, res) => {
 };
 
 const updateUserPassword = async (req, res) => {
-  res.send("update user password");
+  const { oldPassword, newPassword } = req.body;
+  // Check if the user enters both the old and new passwords on the front end
+  if (!oldPassword || !newPassword) {
+    throw new CustomError.BadRequestError("Please provide both values");
+  }
+
+  const user = await User.findOne({ _id: req.user.userId });
+
+  // compare the oldPassword with the password in the database
+  const isPasswordCorrect = await user.comparePassword(oldPassword);
+  if (!isPasswordCorrect) {
+    throw new CustomError.UnauthenticatedError("Invalid Credentials");
+  }
+  // update the password with the new one
+  user.password = newPassword;
+
+  // save the data for the user
+  // note: before saving, the password is hashed -> look at UserSchema.pre in the User model
+  await user.save();
+  res.status(StatusCodes.OK).json({ msg: "Success! Password Updated." });
 };
 
 module.exports = {
