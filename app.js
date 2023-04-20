@@ -10,6 +10,7 @@ const app = express();
 
 // rest of the packages
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 
 // database
 const connectDB = require("./db/connect");
@@ -21,13 +22,22 @@ const authRouter = require("./routes/authRoutes");
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 
+// morgan logger middleware
 app.use(morgan("tiny"));
 
 // middleware to allow access to json data
 app.use(express.json());
 
+// middleware to parse cookies
+app.use(cookieParser());
+
 // routes
 app.get("/", (req, res) => {
+  res.send("e-commerce api");
+});
+
+app.get("/api/v1", (req, res) => {
+  console.log(req.cookies);
   res.send("e-commerce api");
 });
 
