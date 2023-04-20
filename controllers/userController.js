@@ -28,6 +28,24 @@ const updateUser = async (req, res) => {
   if (!email || !name) {
     throw new CustomError.BadRequestError("Please provide all values");
   }
+  const user = await User.findOne({ _id: req.user.userId });
+  user.email = email;
+  user.name = name;
+  await user.save();
+
+  const tokenUser = createTokenUser(user);
+  attachCookiesToResponse({ res, user: tokenUser });
+  res.status(StatusCodes.OK).json({ user: tokenUser });
+};
+
+/*
+// update user with findOneAndUpdate
+const updateUser = async (req, res) => {
+  const { email, name } = req.body;
+  // Check if the user enters both email and name on the front end
+  if (!email || !name) {
+    throw new CustomError.BadRequestError("Please provide all values");
+  }
   // Run validators and update with the new data
   const user = await User.findOneAndUpdate(
     { _id: req.user.userId },
@@ -38,6 +56,7 @@ const updateUser = async (req, res) => {
   attachCookiesToResponse({ res, user: tokenUser });
   res.status(StatusCodes.OK).json({ user: tokenUser });
 };
+*/
 
 const updateUserPassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
