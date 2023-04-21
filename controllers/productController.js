@@ -54,10 +54,12 @@ const uploadImage = async (req, res) => {
   }
   const productImage = req.files.image;
 
+  // Check if admins add a correct image type
   if (!productImage.mimetype.startsWith("image")) {
     throw new CustomError.BadRequestError("Please Upload Image");
   }
 
+  // Check if image size is acceptable
   const maxSize = 1024 * 1024;
   if (productImage.size > maxSize) {
     throw new CustomError.BadRequestError(
@@ -65,11 +67,13 @@ const uploadImage = async (req, res) => {
     );
   }
 
+  // Move uploaded image to the uploads folder
   const imagePath = path.join(
     __dirname,
     "../public/uploads/" + `${productImage.name}`
   );
   await productImage.mv(imagePath);
+
   res.status(StatusCodes.OK).json({ image: `/uploads/${productImage.name}` });
 };
 
