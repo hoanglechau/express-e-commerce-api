@@ -11,6 +11,7 @@ const app = express();
 // rest of the packages
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const fileUpload = require("express-fileupload");
 
 // database
 const connectDB = require("./db/connect");
@@ -32,6 +33,11 @@ app.use(express.json());
 
 // middleware to parse cookies
 app.use(cookieParser(process.env.JWT_SECRET));
+
+// make the public folder a static asset in the app
+app.use(express.static("./public"));
+// middleware to upload pictures
+app.use(fileUpload());
 
 // routes
 app.get("/", (req, res) => {
