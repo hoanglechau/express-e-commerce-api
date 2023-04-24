@@ -64,7 +64,16 @@ const ProductSchema = new mongoose.Schema(
     },
   },
   // second argument
-  { timestamps: true }
+  // also set this model to accept Mongoose virtuals
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+ProductSchema.virtual("reviews", {
+  ref: "Review",
+  localField: "_id",
+  foreignField: "product",
+  justOne: false,
+  // match:{rating:5} // get only reviews with rating of 5
+});
 
 module.exports = mongoose.model("Product", ProductSchema);
