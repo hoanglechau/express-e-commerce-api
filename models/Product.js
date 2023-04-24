@@ -76,4 +76,9 @@ ProductSchema.virtual("reviews", {
   // match:{rating:5} // get only reviews with rating of 5
 });
 
+// Delete all reviews associated with the product that we want to remove before removing it
+ProductSchema.pre("remove", async function (next) {
+  await this.model("Review").deleteMany({ product: this._id });
+});
+
 module.exports = mongoose.model("Product", ProductSchema);
