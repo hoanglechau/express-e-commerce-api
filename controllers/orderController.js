@@ -42,8 +42,8 @@ const createOrder = async (req, res) => {
     // calculate subtotal
     subtotal += item.amount * price;
   }
-  console.log(orderItems);
-  console.log(subtotal);
+  // calculate total
+  const total = tax + shippingFee + subtotal;
   res.send("create order");
 };
 
